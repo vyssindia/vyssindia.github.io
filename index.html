@@ -60,12 +60,26 @@ footer{background:var(--d);color:#dfe6dc;padding:40px 0 20px;font-size:14px}.ft{
 .copy{border-top:1px solid #ffffff22;margin-top:20px;padding-top:14px;text-align:center;opacity:.7}
 .fab{position:fixed;right:18px;bottom:18px;width:60px;height:60px;border-radius:50%;background:#25D366;box-shadow:0 6px 18px #0004;display:flex;align-items:center;justify-content:center;z-index:20}.fab svg{width:32px;fill:#fff}
 @media(max-width:860px){nav{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.about,.ct{grid-template-columns:1fr}.st h2{font-size:24px}.hd img{height:48px;width:auto}.hd .btn{padding:8px 12px;font-size:14px}section{padding:44px 0}.warn{font-size:18px}}
+
+/* Temporary Diwali theme – show through 10 Nov 2026 IST; auto-hide from 11 Nov 2026 00:00 Asia/Kolkata (see diwali script). */
+.diwali-banner{background:linear-gradient(90deg,#FFF8E8,#F5E6C8 45%,#FFE8B8);color:var(--d);text-align:center;padding:8px 16px;font-weight:700;font-size:15px;line-height:1.4;border-bottom:2px solid var(--s);position:relative;z-index:11}
+.diwali-banner[hidden]{display:none!important}
+.hero .diya{position:absolute;font-size:22px;line-height:1;opacity:.5;pointer-events:none;user-select:none;z-index:1;filter:drop-shadow(0 0 8px rgba(232,163,61,.55))}
+.hero .diya.tl{top:16px;left:16px}.hero .diya.tr{top:16px;right:16px}
+.hero .diya.bl{bottom:20px;left:20px;font-size:16px;opacity:.35}.hero .diya.br{bottom:20px;right:20px;font-size:16px;opacity:.35}
+@media(max-width:860px){.diwali-banner{font-size:13px;padding:7px 12px}.hero .diya{font-size:18px}.hero .diya.bl,.hero .diya.br{display:none}}
 </style></head><body>
+<!-- Temporary Diwali festive theme: visible through 10 Nov 2026 (IST inclusive). Auto-hides from 11 Nov 2026 00:00 Asia/Kolkata. Safe to delete this block after Diwali. -->
+<script>
+(function(){try{var d=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());if(d>'2026-11-10')document.documentElement.classList.add('diwali-off')}catch(e){}})();
+</script>
+<style>.diwali-off .diwali-banner,.diwali-off .hero .diya{display:none!important}</style>
+<div class="diwali-banner" role="status">🪔 दीपावलीच्या हार्दिक शुभेच्छा – वनवासी युवा सेवा संस्था</div>
 <header><div class="wrap hd"><a href="#home"><picture><source srcset="assets/logo-horizontal.webp" type="image/webp"><img src="assets/logo-horizontal.png" width="420" height="118" alt="वनवासी युवा सेवा संस्था (VYSS) लोगो – मुखपृष्ठावर जा"></picture></a>
 <nav><a href="#home">मुख्यपृष्ठ</a><a href="#yojana">योजना</a><a href="#seva">सेवा</a><a href="#about">आमच्याबद्दल</a><a href="#faq">FAQ</a><a href="#contact">संपर्क</a></nav>
 <a class="btn wa" href="https://wa.me/918275562968?text=%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A4%BE%E0%A4%B0%2C%20%E0%A4%AE%E0%A4%B2%E0%A4%BE%20%E0%A4%AF%E0%A5%8B%E0%A4%9C%E0%A4%A8%E0%A5%87%E0%A4%AC%E0%A4%A6%E0%A5%8D%E0%A4%A6%E0%A4%B2%20%E0%A4%AE%E0%A4%BE%E0%A4%B9%E0%A4%BF%E0%A4%A4%E0%A5%80%20%E0%A4%B9%E0%A4%B5%E0%A5%80%20%E0%A4%86%E0%A4%B9%E0%A5%87" target="_blank" rel="noopener">💬 WhatsApp करा</a></div></header>
 
-<div class="hero" id="home"><div class="wrap"><span class="tag">🌿 नागेपल्ली, अहेरी, गडचिरोली</span>
+<div class="hero" id="home"><span class="diya tl" aria-hidden="true">🪔</span><span class="diya tr" aria-hidden="true">🪔</span><span class="diya bl" aria-hidden="true">✨</span><span class="diya br" aria-hidden="true">✨</span><div class="wrap"><span class="tag">🌿 नागेपल्ली, अहेरी, गडचिरोली</span>
 <h1>सर्वांसाठी शासकीय योजना – मोफत माहिती व अर्ज मदत</h1>
 <p>समाजातील सर्वांसाठी – आदिवासी बांधव, महिला, युवक, शेतकरी व विद्यार्थी. RSETI प्रशिक्षण, ITDP अहेरी, आदिवासी विकास विभाग व इतर शासकीय योजनांची माहिती, कागदपत्र तपासणी आणि ऑनलाइन अर्ज – पूर्णपणे मोफत.</p>
 <div class="b"><a class="btn s wa" href="https://wa.me/918275562968?text=%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A4%BE%E0%A4%B0%2C%20%E0%A4%AE%E0%A4%B2%E0%A4%BE%20%E0%A4%AF%E0%A5%8B%E0%A4%9C%E0%A4%A8%E0%A5%87%E0%A4%AC%E0%A4%A6%E0%A5%8D%E0%A4%A6%E0%A4%B2%20%E0%A4%AE%E0%A4%BE%E0%A4%B9%E0%A4%BF%E0%A4%A4%E0%A5%80%20%E0%A4%B9%E0%A4%B5%E0%A5%80%20%E0%A4%86%E0%A4%B9%E0%A5%87" target="_blank" rel="noopener">💬 WhatsApp वर विचारा</a><a class="btn o" href="#pahili-yojana">योजना पहा ↓</a></div></div></div>
