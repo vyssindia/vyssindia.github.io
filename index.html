@@ -68,13 +68,28 @@ footer{background:var(--d);color:#dfe6dc;padding:40px 0 20px;font-size:14px}.ft{
 .hero .diya.tl{top:16px;left:16px}.hero .diya.tr{top:16px;right:16px}
 .hero .diya.bl{bottom:20px;left:20px;font-size:16px;opacity:.35}.hero .diya.br{bottom:20px;right:20px;font-size:16px;opacity:.35}
 @media(max-width:860px){.diwali-banner{font-size:13px;padding:7px 12px}.hero .diya{font-size:18px}.hero .diya.bl,.hero .diya.br{display:none}}
+/* One-time Diwali celebration splash (localStorage vyss-diwali-2026-burst); auto-off with diwali-off */
+.diwali-burst{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(31,42,34,.48);pointer-events:auto;opacity:1;transition:opacity .55s ease}
+.diwali-burst[hidden],.diwali-burst.is-done{display:none!important}
+.diwali-burst.is-fading{opacity:0;pointer-events:none}
+.diwali-burst canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.diwali-burst .msg{position:relative;z-index:1;text-align:center;padding:26px 32px;border-radius:18px;background:linear-gradient(165deg,#FFF8E8 0%,#FFE8B8 55%,#F5E6C8 100%);box-shadow:0 16px 48px rgba(11,93,30,.28),0 0 0 2px #E8A33D;max-width:92vw;animation:diwali-pop .55s ease-out}
+.diwali-burst .msg h2{font-size:44px;color:#0B5D1E;line-height:1.15;letter-spacing:.02em;text-shadow:0 1px 0 #fff,0 0 24px rgba(232,163,61,.45)}
+.diwali-burst .msg p{font-size:18px;color:#1F2A22;margin-top:10px;font-weight:700}
+@keyframes diwali-pop{0%{transform:scale(.86);opacity:0}70%{transform:scale(1.03)}100%{transform:scale(1);opacity:1}}
+@media(max-width:860px){.diwali-burst .msg{padding:20px 22px}.diwali-burst .msg h2{font-size:28px}.diwali-burst .msg p{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.diwali-burst .msg{animation:none}}
 </style></head><body>
 <!-- Temporary Diwali festive theme: visible through 10 Nov 2026 (IST inclusive). Auto-hides from 11 Nov 2026 00:00 Asia/Kolkata. Safe to delete this block after Diwali. -->
 <script>
 (function(){try{var d=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());if(d>'2026-11-10')document.documentElement.classList.add('diwali-off')}catch(e){}})();
 </script>
-<style>.diwali-off .diwali-banner,.diwali-off .hero .diya{display:none!important}</style>
+<style>.diwali-off .diwali-banner,.diwali-off .hero .diya,.diwali-off .diwali-burst{display:none!important}</style>
 <div class="diwali-banner" role="status">🪔 दीपावलीच्या हार्दिक शुभेच्छा – वनवासी युवा सेवा संस्था</div>
+<div class="diwali-burst" id="diwali-burst" hidden aria-live="polite">
+<canvas aria-hidden="true"></canvas>
+<div class="msg"><h2>Happy Diwali</h2><p>दीपावलीच्या शुभेच्छा</p></div>
+</div>
 <header><div class="wrap hd"><a href="#home"><picture><source srcset="assets/logo-horizontal.webp" type="image/webp"><img src="assets/logo-horizontal.png" width="420" height="118" alt="वनवासी युवा सेवा संस्था (VYSS) लोगो – मुखपृष्ठावर जा"></picture></a>
 <nav><a href="#home">मुख्यपृष्ठ</a><a href="#yojana">योजना</a><a href="#seva">सेवा</a><a href="#about">आमच्याबद्दल</a><a href="#faq">FAQ</a><a href="#contact">संपर्क</a></nav>
 <a class="btn wa" href="https://wa.me/918275562968?text=%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A4%BE%E0%A4%B0%2C%20%E0%A4%AE%E0%A4%B2%E0%A4%BE%20%E0%A4%AF%E0%A5%8B%E0%A4%9C%E0%A4%A8%E0%A5%87%E0%A4%AC%E0%A4%A6%E0%A5%8D%E0%A4%A6%E0%A4%B2%20%E0%A4%AE%E0%A4%BE%E0%A4%B9%E0%A4%BF%E0%A4%A4%E0%A5%80%20%E0%A4%B9%E0%A4%B5%E0%A5%80%20%E0%A4%86%E0%A4%B9%E0%A5%87" target="_blank" rel="noopener">💬 WhatsApp करा</a></div></header>
@@ -151,6 +166,118 @@ footer{background:var(--d);color:#dfe6dc;padding:40px 0 20px;font-size:14px}.ft{
 var WA_NUMBER="918275562968";
 var url="https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent("नमस्कार, मला योजनेबद्दल माहिती हवी आहे");
 document.querySelectorAll('a.wa').forEach(function(a){a.href=a.dataset.wa?"https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(a.dataset.wa):url;a.target="_blank";a.rel="noopener"});
-</script><script data-goatcounter="https://vyss.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</script>
+<script>
+/* One-time Diwali spark burst – key vyss-diwali-2026-burst; only while theme active (through 2026-11-10 IST). */
+(function(){
+  try{
+    if(document.documentElement.classList.contains('diwali-off')) return;
+    var KEY='vyss-diwali-2026-burst';
+    var preview=/[?&]diwaliBurstPreview=1(?:&|$)/.test(location.search||'');
+    if(!preview&&localStorage.getItem(KEY)) return;
+    var root=document.getElementById('diwali-burst');
+    if(!root) return;
+    var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(preview) reduce=false;
+    var canvas=root.querySelector('canvas');
+    var ctx=canvas&&canvas.getContext?canvas.getContext('2d'):null;
+    var parts=[];
+    var colors=['#E8A33D','#0B5D1E','#FFF8E8','#F5C16C','#2a6b2f','#FFE8B8','#B3261E'];
+    var mobile=window.matchMedia&&window.matchMedia('(max-width:860px)').matches;
+    var N=reduce?0:(mobile?48:90);
+    var start=performance.now();
+    var DURATION=3000; /* visible ~3s then fade */
+    var FADE=550;
+    var running=true;
+    function resize(){
+      if(!canvas) return;
+      canvas.width=window.innerWidth;
+      canvas.height=window.innerHeight;
+    }
+    function spawnBurst(cx,cy,n){
+      for(var i=0;i<n;i++){
+        var ang=Math.random()*Math.PI*2;
+        var sp=2.2+Math.random()*5.5;
+        parts.push({
+          x:cx,y:cy,
+          vx:Math.cos(ang)*sp,
+          vy:Math.sin(ang)*sp-1.2,
+          g:0.045+Math.random()*0.04,
+          life:0.85+Math.random()*0.55,
+          age:0,
+          r:1.5+Math.random()*2.8,
+          c:colors[(Math.random()*colors.length)|0],
+          spark:Math.random()>0.55
+        });
+      }
+    }
+    function frame(t){
+      if(!running||!ctx) return;
+      var elapsed=t-start;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(var i=parts.length-1;i>=0;i--){
+        var p=parts[i];
+        p.age+=0.016;
+        p.vy+=p.g;
+        p.x+=p.vx;
+        p.y+=p.vy;
+        p.vx*=0.992;
+        var a=Math.max(0,1-p.age/p.life);
+        if(a<=0){parts.splice(i,1);continue;}
+        ctx.globalAlpha=a;
+        ctx.fillStyle=p.c;
+        if(p.spark){
+          ctx.beginPath();
+          ctx.moveTo(p.x,p.y-p.r*1.6);
+          ctx.lineTo(p.x+p.r*0.45,p.y);
+          ctx.lineTo(p.x,p.y+p.r*1.6);
+          ctx.lineTo(p.x-p.r*0.45,p.y);
+          ctx.closePath();
+          ctx.fill();
+        }else{
+          ctx.beginPath();
+          ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha=1;
+      if(elapsed<900){
+        /* soft secondary crackle bursts */
+        if(elapsed>180&&elapsed<220&&parts.length<N*1.4) spawnBurst(canvas.width*0.28,canvas.height*0.38,Math.floor(N*0.35));
+        if(elapsed>420&&elapsed<460&&parts.length<N*1.6) spawnBurst(canvas.width*0.72,canvas.height*0.42,Math.floor(N*0.35));
+      }
+      if(preview||elapsed<DURATION+FADE){
+        if(preview&&elapsed>900&&parts.length<20) spawnBurst(canvas.width*(0.3+Math.random()*0.4),canvas.height*(0.3+Math.random()*0.3),12);
+        requestAnimationFrame(frame);
+      }
+    }
+    root.hidden=false;
+    if(!preview) localStorage.setItem(KEY,'1');
+    if(!reduce&&ctx){
+      resize();
+      window.addEventListener('resize',resize,{passive:true});
+      spawnBurst(canvas.width*0.5,canvas.height*0.42,N);
+      requestAnimationFrame(frame);
+    }else if(canvas){
+      canvas.style.display='none';
+    }
+    if(preview){
+      /* Keep overlay open for screenshots; still animate sparks */
+      return;
+    }
+    setTimeout(function(){
+      root.classList.add('is-fading');
+      root.style.pointerEvents='none';
+      setTimeout(function(){
+        running=false;
+        root.classList.add('is-done');
+        root.hidden=true;
+        if(ctx&&canvas) ctx.clearRect(0,0,canvas.width,canvas.height);
+      },FADE);
+    },DURATION);
+  }catch(e){}
+})();
+</script>
+<script data-goatcounter="https://vyss.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"]');if(a&&window.goatcounter&&goatcounter.count){goatcounter.count({path:'whatsapp-click',title:'WhatsApp button click',event:true})}});</script>
 </body></html>
