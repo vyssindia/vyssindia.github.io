@@ -134,3 +134,6 @@ footer{background:var(--d);color:#dfe6dc;padding:36px 0 20px;font-size:14px}.ft{
  .yc .thumb{flex-basis:72px;width:72px}.yc .thumb img{width:72px;height:72px}
 }
 #quiz{scroll-margin-top:150px}
+.bearers{margin-top:18px;background:#fff;border-radius:14px;padding:18px 20px;box-shadow:var(--sh)}.bearers h3{color:var(--g);margin-bottom:6px}
+.bearers ul{list-style:none}.bearers li{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line);font-size:18px}.bearers li:last-child{border-bottom:0}
+.bearers li span{color:var(--g);font-weight:700;white-space:nowrap;font-size:17px}
