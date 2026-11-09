@@ -7,10 +7,12 @@
     mr: { last: 'शेवटची तारीख', posts: 'पदे', who: 'कोण अर्ज करू शकतो', links: 'अधिकृत लिंक', free: 'VYSS ची मदत मोफत. नोकरीची हमी नाही.',
       docs: 'कागदपत्रांची यादी', fill: 'मोफत फॉर्म भरा', fillP: 'VYSS तुमचा अर्ज मोफत भरण्यास मदत करेल. खालीलपैकी एक निवडा:',
       ask: 'WhatsApp वर विचारा', gform: 'Google फॉर्म भरा', isNew: 'नवीन',
+      left: function (d) { return d === 0 ? '⏰ आज शेवटचा दिवस' : '⏰ फक्त ' + d + ' दिवस बाकी'; },
       msg: function (n) { return 'नमस्कार, मला ' + n + ' साठी मोफत फॉर्म मदत हवी आहे.'; } },
     hi: { last: 'अंतिम तिथि', posts: 'पद', who: 'कौन आवेदन कर सकता है', links: 'आधिकारिक लिंक', free: 'VYSS की मदद निःशुल्क। नौकरी की गारंटी नहीं।',
       docs: 'दस्तावेज़ों की सूची', fill: 'निःशुल्क फॉर्म भरें', fillP: 'VYSS आपका आवेदन निःशुल्क भरने में मदद करेगा। नीचे से एक चुनें:',
       ask: 'WhatsApp पर पूछें', gform: 'Google फॉर्म भरें', isNew: 'नया',
+      left: function (d) { return d === 0 ? '⏰ आज अंतिम दिन' : '⏰ सिर्फ़ ' + d + ' दिन बाकी'; },
       msg: function (n) { return 'नमस्ते, मुझे ' + n + ' के लिए निःशुल्क फॉर्म मदद चाहिए।'; } }
   };
   function lang() { try { return localStorage.getItem('vyss-lang') === 'hi' ? 'hi' : 'mr'; } catch (e) { return 'mr'; } }
@@ -24,6 +26,11 @@
     if (!job.addedOn) return false;
     var t = new Date(job.addedOn + 'T00:00:00+05:30').getTime();
     return !isNaN(t) && Date.now() - t >= 0 && Date.now() - t <= 7 * 864e5;
+  }
+  function daysLeft(job) {
+    var t = new Date(job.endsAt).getTime(), D = 864e5, o = 19800000;
+    if (isNaN(t) || Date.now() > t) return null;
+    return Math.floor((t + o) / D) - Math.floor((Date.now() + o) / D);
   }
   function esc(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -39,6 +46,7 @@
     return (
       '<article class="card naukri-card" id="job-' + esc(job.id) + '" data-ends="' + esc(job.endsAt) + '">' +
         '<div class="tags">' + (isNew(job) ? '<span class="t new">' + t.isNew + '</span>' : '') +
+        (function () { var d = daysLeft(job); return d !== null && d <= 7 ? '<span class="t soon">' + t.left(d) + '</span>' : ''; })() +
         '<span class="t date">📅 ' + t.last + ': ' + esc(f('lastDateLabel')) + '</span></div>' +
         '<h3>💼 ' + esc(f('title')) + '</h3>' +
         '<p class="naukri-org"><strong>' + esc(f('org')) + '</strong></p>' +
@@ -55,6 +63,7 @@
       '</article>'
     );
   }
+  window.VYSS_JOBS_RENDER = { renderJob: renderJob, isOpen: isOpen };
   function run() {
     var grid = document.getElementById('naukri-grid');
     var empty = document.getElementById('naukri-empty');
