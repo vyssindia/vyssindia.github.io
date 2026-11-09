@@ -144,3 +144,4 @@ footer{background:var(--d);color:#dfe6dc;padding:36px 0 20px;font-size:16px}.ft{
 .role.lead{grid-column:1/-1;border-left-color:var(--g);background:linear-gradient(135deg,#fff,#f3f9f3)}.role.lead .post{background:var(--g);color:#fff}
 @media(max-width:860px){body{padding-bottom:84px}.rgrid{grid-template-columns:1fr 1fr}footer{padding-bottom:28px}}
 @media(max-width:380px){.rgrid{grid-template-columns:1fr}}
+.social{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:10px}.social a{display:inline-flex;align-items:center;gap:8px;color:#fff;font-size:16px;min-height:44px}.social svg{width:22px;height:22px;fill:#fff;flex:0 0 22px}
