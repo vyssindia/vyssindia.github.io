@@ -29,7 +29,7 @@ const put = (file, html) => {
 };
 // Jobs
 const J = sandbox.VYSS_JOBS_RENDER;
-const open = (sandbox.VYSS_JOBS || []).filter(J.isOpen);
+const open = (sandbox.VYSS_JOBS || []).filter(J.isOpen).sort(J.byEnd);
 let n = put('naukri/index.html', open.map(j => J.renderJob(j, 'mr')).join(''));
 n = open.length ? n.replace('<div id="naukri-empty">', '<div id="naukri-empty" hidden>')
                 : n.replace('<div id="naukri-empty" hidden>', '<div id="naukri-empty">');
@@ -37,7 +37,12 @@ fs.writeFileSync(path.join(root, 'naukri/index.html'), n);
 // Schemes by category
 const Y = (sandbox.VYSS_YOJANA || []).filter(Boolean);
 for (const c of sandbox.VYSS_CATS || []) {
-  const list = Y.filter(y => y.cat === c.id).sort((a, b) => sandbox.VYSS.isPast(a.endsAt) - sandbox.VYSS.isPast(b.endsAt));
+  const list = Y.filter(y => y.cat === c.id && !sandbox.VYSS.isGone(y)).sort((a, b) => sandbox.VYSS.isPast(a.endsAt) - sandbox.VYSS.isPast(b.endsAt));
   put('yojana/' + c.id + '/index.html', list.map(y => sandbox.VYSS.card(y, 'mr')).join(''));
+}
+// Scheme detail pages (one card each)
+for (const y of Y) {
+  const f = 'yojana/' + y.id + '/index.html';
+  if (fs.existsSync(path.join(root, f))) put(f, sandbox.VYSS.card(Object.assign({}, y, { _one: true }), 'mr'));
 }
 console.log('prerendered: ' + open.length + ' jobs, ' + Y.length + ' schemes');

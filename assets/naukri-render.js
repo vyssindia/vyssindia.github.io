@@ -2,16 +2,15 @@
    Optional per-job fields (old jobs work without them): addedOn "YYYY-MM-DD" -> 'नवीन' tag for 7 days;
    hi: {title, org, posts, who, lastDateLabel, extraNote, checklist} -> Hindi text when हिंदी is selected. */
 (function () {
-  var FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSckU60Jkive6EZ89aru78TZxyDDnucaY7zXdhnORbkxHZitTg/viewform';
   var T = {
     mr: { last: 'शेवटची तारीख', posts: 'पदे', who: 'कोण अर्ज करू शकतो', links: 'अधिकृत लिंक', free: 'VYSS ची मदत मोफत. नोकरीची हमी नाही.',
-      docs: 'कागदपत्रांची यादी', fill: 'मोफत फॉर्म भरा', fillP: 'VYSS तुमचा अर्ज मोफत भरण्यास मदत करेल. खालीलपैकी एक निवडा:',
-      ask: 'WhatsApp वर विचारा', gform: 'Google फॉर्म भरा', isNew: 'नवीन',
+      docs: 'कागदपत्रांची यादी', fill: 'मोफत फॉर्म भरा', fillP: 'VYSS तुमचा अर्ज मोफत भरण्यास मदत करेल. खालील बटण दाबून WhatsApp वर विचारा:',
+      ask: 'WhatsApp वर विचारा', isNew: 'नवीन',
       left: function (d) { return d === 0 ? '⏰ आज शेवटचा दिवस' : '⏰ फक्त ' + d + ' दिवस बाकी'; },
       msg: function (n) { return 'नमस्कार, मला ' + n + ' साठी मोफत फॉर्म मदत हवी आहे.'; } },
     hi: { last: 'अंतिम तिथि', posts: 'पद', who: 'कौन आवेदन कर सकता है', links: 'आधिकारिक लिंक', free: 'VYSS की मदद निःशुल्क। नौकरी की गारंटी नहीं।',
-      docs: 'दस्तावेज़ों की सूची', fill: 'निःशुल्क फॉर्म भरें', fillP: 'VYSS आपका आवेदन निःशुल्क भरने में मदद करेगा। नीचे से एक चुनें:',
-      ask: 'WhatsApp पर पूछें', gform: 'Google फॉर्म भरें', isNew: 'नया',
+      docs: 'दस्तावेज़ों की सूची', fill: 'निःशुल्क फॉर्म भरें', fillP: 'VYSS आपका आवेदन निःशुल्क भरने में मदद करेगा। नीचे का बटन दबाकर WhatsApp पर पूछें:',
+      ask: 'WhatsApp पर पूछें', isNew: 'नया',
       left: function (d) { return d === 0 ? '⏰ आज अंतिम दिन' : '⏰ सिर्फ़ ' + d + ' दिन बाकी'; },
       msg: function (n) { return 'नमस्ते, मुझे ' + n + ' के लिए निःशुल्क फॉर्म मदद चाहिए।'; } }
   };
@@ -58,17 +57,17 @@
         '<div class="naukri-help"><h4>' + t.fill + '</h4><p>' + t.fillP + '</p>' +
           '<p class="naukri-btns">' +
             '<a class="btn wa-btn" href="https://wa.me/918275562968?text=' + encodeURIComponent(t.msg(name)) + '" target="_blank" rel="noopener">💬 ' + t.ask + '</a>' +
-            '<a class="btn ghost" href="' + FORM + '" target="_blank" rel="noopener">📝 ' + t.gform + '</a>' +
           '</p></div>' +
       '</article>'
     );
   }
-  window.VYSS_JOBS_RENDER = { renderJob: renderJob, isOpen: isOpen };
+  function byEnd(a, b) { return new Date(a.endsAt).getTime() - new Date(b.endsAt).getTime(); }
+  window.VYSS_JOBS_RENDER = { renderJob: renderJob, isOpen: isOpen, byEnd: byEnd };
   function run() {
     var grid = document.getElementById('naukri-grid');
     var empty = document.getElementById('naukri-empty');
     if (!grid) return;
-    var open = (Array.isArray(window.VYSS_JOBS) ? window.VYSS_JOBS : []).filter(isOpen);
+    var open = (Array.isArray(window.VYSS_JOBS) ? window.VYSS_JOBS : []).filter(isOpen).sort(byEnd);
     if (!open.length) { grid.innerHTML = ''; grid.hidden = true; if (empty) empty.hidden = false; return; }
     grid.hidden = false; if (empty) empty.hidden = true;
     var l = lang();
