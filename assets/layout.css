@@ -96,7 +96,7 @@ footer{background:var(--d);color:#dfe6dc;padding:36px 0 20px;font-size:16px}.ft{
  .list,#naukri-grid{grid-template-columns:1fr}
  .naukri-btns .btn,.acts .btn{flex:1 1 auto}
 }
-@media(max-width:600px){@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.box{transition:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.box{transition:none}}
 
 /* accessibility / big-tap additions */
 .btn.big{font-size:19px;padding:12px 24px;min-height:56px}

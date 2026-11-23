@@ -11,8 +11,9 @@ const CATS = sb.window.VYSS_CATS, Y = sb.window.VYSS_YOJANA.filter(Boolean);
 const T = fs.readFileSync(path.join(root, 'yojana/anudan/index.html'), 'utf8');
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const WA = m => 'https://wa.me/918275562968?text=' + encodeURIComponent(m);
-const cut = (s, n) => { s = s.replace(/\s+/g, ' ').trim(); return s.length <= n ? s : s.slice(0, n - 1).replace(/[\s,.;:–-]+\S*$/, '') + '…'; };
-const headStart = T.indexOf('<title>'), headEnd = T.indexOf('<link rel="icon"');
+// Description: whole sentences only (no '…'); seoDesc in yojana-data.js wins when present.
+const cut = (s, n) => { s = s.replace(/\s+/g, ' ').trim(); if (s.length <= n) return s; let out = ''; for (const p of s.split(/(?<=[.।])\s+/)) { if ((out + ' ' + p).trim().length > n) break; out = (out + ' ' + p).trim(); } return out || s.slice(0, n).replace(/[\s,;:–-]+\S*$/, '') + '.'; };
+const headStart = T.indexOf('<title>'), headEnd = T.indexOf('<link rel="stylesheet"');
 const [pre, rest] = [T.slice(0, headStart), T.slice(headEnd)];
 function page(o) {
   let s = pre + o.head + rest;
@@ -31,14 +32,19 @@ const help = T.match(/<p class="helpnote"[\s\S]*?<\/p>/)[0];
 for (const y of Y) {
   const c = CATS.find(x => x.id === y.cat);
   const url = 'https://vyss.in' + y.page;
-  const title = y.title.mr + ' | VYSS नागेपल्ली, अहेरी';
-  const desc = cut(y.body.mr, 155);
+  const title = y.seoTitle || (y.title.mr.length <= 46 ? y.title.mr + ' | VYSS अहेरी' : y.title.mr + ' | VYSS');
+  const desc = y.seoDesc || cut(y.body.mr, 155);
   const img = y.poster ? 'https://vyss.in' + y.poster.replace(/\.webp$/, '.jpg') : 'https://vyss.in/assets/og-1200x630.jpg';
   const head = '<title>' + esc(title) + '</title>\n<meta name="description" content="' + esc(desc) + '">\n<link rel="canonical" href="' + url + '">\n' +
     '<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">\n<link rel="apple-touch-icon" href="/assets/favicon-192.png">\n<link rel="preload" as="image" href="/assets/logo-horizontal.webp" type="image/webp" fetchpriority="high">\n<meta name="theme-color" content="#0B5D1E">\n' +
     '<meta property="og:type" content="article"><meta property="og:site_name" content="वनवासी युवा सेवा संस्था (VYSS)">\n' +
     '<meta property="og:url" content="' + url + '"><meta property="og:title" content="' + esc(title) + '"><meta property="og:description" content="' + esc(desc) + '">\n' +
-    '<meta property="og:image" content="' + img + '"><meta property="og:locale" content="mr_IN"><meta property="og:locale:alternate" content="hi_IN">\n<meta name="twitter:card" content="summary_large_image">\n';
+    '<meta property="og:image" content="' + img + '"><meta property="og:locale" content="mr_IN"><meta property="og:locale:alternate" content="hi_IN">\n<meta name="twitter:card" content="summary_large_image">\n' +
+    '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'मुख्यपृष्ठ', item: 'https://vyss.in/' },
+      { '@type': 'ListItem', position: 2, name: 'योजना', item: 'https://vyss.in/yojana/' },
+      { '@type': 'ListItem', position: 3, name: c.mr, item: 'https://vyss.in/yojana/' + c.id + '/' },
+      { '@type': 'ListItem', position: 4, name: y.title.mr, item: url }] }).replace(/</g, '\\u003c') + '</script>\n';
   const poster = y.poster ? '<div class="poster-big"><a href="' + esc(y.poster) + '" target="_blank" rel="noopener"><picture><source srcset="' + esc(y.poster) + '" type="image/webp"><img src="' + esc(y.poster.replace(/\.webp$/, '.jpg')) + '" width="720" height="720" loading="lazy" alt="' + esc(y.title.mr) + ' – पोस्टर"></picture></a></div>' : '';
   const main = '<div class="ph-hero"><div class="wrap"><p class="crumb"><a href="/" data-hi="मुख्य पृष्ठ">मुख्यपृष्ठ</a> / <a href="/yojana/" data-hi="योजना">योजना</a> / <a href="/yojana/' + c.id + '/" data-hi="' + esc(c.hi) + '">' + esc(c.mr) + '</a></p>' +
     '<h1 data-hi="' + esc(y.title.hi) + '">' + esc(y.title.mr) + '</h1><p data-hi="' + esc(c.dhi) + '">' + esc(c.dmr) + '</p></div></div>' +
@@ -49,7 +55,7 @@ for (const y of Y) {
   fs.writeFileSync(path.join(dir, 'index.html'), y.rseti ? html.replace('<html lang="mr">', '<html lang="mr"><!-- RSETI page: replaced by tools/rseti-remove.js on 12 Nov 2026 -->') : html);
 }
 // 404
-const h404 = '<title>पान सापडले नाही (404) | VYSS नागेपल्ली, अहेरी</title>\n<meta name="robots" content="noindex">\n<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">\n<link rel="apple-touch-icon" href="/assets/favicon-192.png">\n<meta name="theme-color" content="#0B5D1E">\n';
+const h404 = '<title>पान सापडले नाही (404) | VYSS नागेपल्ली, अहेरी</title>\n<meta name="description" content="हे पान सापडले नाही, मुख्यपृष्ठ, योजना, नोकरी किंवा WhatsApp वरून VYSS शी संपर्क करा.">\n<meta name="robots" content="noindex">\n<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">\n<link rel="apple-touch-icon" href="/assets/favicon-192.png">\n<meta name="theme-color" content="#0B5D1E">\n';
 const m404 = '<div class="ph-hero"><div class="wrap"><h1 data-hi="😕 यह पेज नहीं मिला">😕 हे पान सापडले नाही</h1><p data-hi="यह जानकारी हटा दी गई है या लिंक गलत है। नीचे के बटन से आगे बढ़ें।">ही माहिती काढली आहे किंवा लिंक चुकीची आहे. खालील बटणाने पुढे जा.</p></div></div>' +
   '<section><div class="wrap e404"><div class="card"><p data-hi="नई योजनाएँ, नौकरियाँ और निःशुल्क फॉर्म मदद – मुख्य पृष्ठ पर।">नवीन योजना, नोकरी व मोफत फॉर्म मदत – मुख्यपृष्ठावर.</p><p class="acts">' +
   '<a class="btn big" href="/" data-hi="🏠 मुख्य पृष्ठ">🏠 मुख्यपृष्ठ</a><a class="btn s big" href="/yojana/" data-hi="📜 मौजूदा योजनाएँ">📜 सध्याच्या योजना</a>' +
